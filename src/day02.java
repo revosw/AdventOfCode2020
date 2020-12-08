@@ -4,11 +4,11 @@ import java.util.regex.Pattern;
 
 public class day02 {
 
-    private record Password(int left, int right, String letter, String pass){}
+    private record Password(int lowerBound, int upperBound, String letter, String pass) {}
 
     public static void main(String[] args) {
         part1();
-        //part2();
+        part2();
     }
 
     public static void part1() {
@@ -35,15 +35,30 @@ public class day02 {
                 .results()
                 .count();
 
-        return occurrences >= password.left() && occurrences <= password.right();
+        return occurrences >= password.lowerBound()
+                && occurrences <= password.upperBound();
     };
 
     public static Predicate<Password> validPasswordPart2 = password -> {
-        return true;
+        char firstPosition = ' ';
+        char secondPosition = ' ';
+        try {
+            firstPosition = password.pass()
+                    .charAt(password.lowerBound() - 1);
+        } catch(IndexOutOfBoundsException e) {
+        }
+        try {
+            secondPosition = password.pass()
+                    .charAt(password.upperBound() - 1);
+        } catch(IndexOutOfBoundsException e) {
+        }
+
+        return String.valueOf(firstPosition).equals(password.letter())
+                ^ String.valueOf(secondPosition).equals(password.letter());
     };
 
-    public static Function<String, Password> parsePassword = password -> {
-        password = password.replaceAll("(-|: )", " ");
+    public static Function<String, Password> parsePassword = _password -> {
+        var password = _password.replaceAll("(-|: )", " ");
         var passwordParts = password.split(" ");
 
         var lowerBound = Integer.parseInt(passwordParts[0]);
@@ -1055,4 +1070,5 @@ public class day02 {
             2-7 g: fmggdgggx
             11-14 z: zzzzzzvzzxbzzh
             7-8 p: ppppppdx""";
+
 }
