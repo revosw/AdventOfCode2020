@@ -1,76 +1,58 @@
 import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.regex.Pattern;
 
 public class day02 {
 
+    private record Password(int left, int right, String letter, String pass){}
+
     public static void main(String[] args) {
-        var input = DATA.split("\n");
-
-        var accepted = 0;
-
-        for (String s : input) {
-            if (isValid2(s)) {
-                accepted++;
-            }
-        }
-
-        System.out.println(accepted);
+        part1();
+        //part2();
     }
 
-    public static boolean isValid2(String s) {
-        boolean success = false;
-        var parts = s.split(" ");
-        var lowhigh = parts[0].split("-");
+    public static void part1() {
+        var validPasswordsCount = DATA.lines()
+                .map(parsePassword)
+                .filter(validPasswordPart1)
+                .count();
 
-        var lowest = Integer.parseInt(lowhigh[0]);
-        var highest = Integer.parseInt(lowhigh[1]);
-        char letter = parts[1].charAt(0);
-        var password = parts[2];
-
-        if (password.length() >= highest) {
-            if (letter == password.charAt(highest - 1)) {
-                success = true;
-            }
-        }
-
-        if (password.length() >= lowest) {
-            if (letter == password.charAt(lowest - 1)) {
-                success = !success;
-            }
-        }
-
-        return success;
+        System.out.println(validPasswordsCount);
     }
 
-    public static boolean isValid(String s) {
-        boolean success = false;
-        var parts = s.split(" ");
-        var lowhigh = parts[0].split("-");
+    public static void part2() {
+        var validPasswordsCount = DATA.lines()
+                .map(parsePassword)
+                .filter(validPasswordPart2)
+                .count();
 
-        var lowest = Integer.parseInt(lowhigh[0]);
-        var highest = Integer.parseInt(lowhigh[1]);
-        char letter = parts[1].charAt(0);
-        var password = parts[2];
-
-        //password.
-
-        int numLetters = 0;
-
-        for (char c : password.toCharArray()) {
-            if (c == letter) {
-                numLetters++;
-            }
-        }
-
-        if (numLetters >= lowest && numLetters <= highest) {
-            success = true;
-        }
-
-        return success;
+        System.out.println(validPasswordsCount);
     }
 
-    public static Function<Integer, Integer> add = n -> n + n;
+    public static Predicate<Password> validPasswordPart1 = password -> {
+        var occurrences = Pattern.compile(password.letter())
+                .matcher(password.pass())
+                .results()
+                .count();
 
-    public static Function<String, Integer> tonum = Integer::parseInt;
+        return occurrences >= password.left() && occurrences <= password.right();
+    };
+
+    public static Predicate<Password> validPasswordPart2 = password -> {
+        return true;
+    };
+
+    public static Function<String, Password> parsePassword = password -> {
+        password = password.replaceAll("(-|: )", " ");
+        var passwordParts = password.split(" ");
+
+        var lowerBound = Integer.parseInt(passwordParts[0]);
+        var upperBound = Integer.parseInt(passwordParts[1]);
+        var letter = passwordParts[2];
+        var pass = passwordParts[3];
+
+        return new Password(lowerBound, upperBound, letter, pass);
+    };
 
     public static final String DATA = """
             2-6 w: wkwwwfwwpvw
