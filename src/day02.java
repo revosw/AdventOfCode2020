@@ -40,21 +40,14 @@ public class day02 {
     };
 
     public static Predicate<Password> validPasswordPart2 = password -> {
-        char firstPosition = ' ';
-        char secondPosition = ' ';
-        try {
-            firstPosition = password.pass()
-                    .charAt(password.lowerBound() - 1);
-        } catch(IndexOutOfBoundsException e) {
-        }
-        try {
-            secondPosition = password.pass()
-                    .charAt(password.upperBound() - 1);
-        } catch(IndexOutOfBoundsException e) {
-        }
+        var firstLetter = password.pass()
+                .charAt(password.lowerBound() - 1);
 
-        return String.valueOf(firstPosition).equals(password.letter())
-                ^ String.valueOf(secondPosition).equals(password.letter());
+        var secondLetter = password.pass()
+                .charAt(password.upperBound() - 1);
+
+        return String.valueOf(firstLetter).equals(password.letter())
+                ^ String.valueOf(secondLetter).equals(password.letter());
     };
 
     public static Function<String, Password> parsePassword = _password -> {
