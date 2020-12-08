@@ -3,12 +3,13 @@ import java.util.List;
 import java.util.function.ToIntFunction;
 
 public class day05 {
+
+    // I have to look into implementing binary search.
     public static void main(String[] args) {
         // part1();
         // part2();
         part2linear();
     }
-
 
     private static void part1() {
         var rows = List.of(DATA.split("\n"));

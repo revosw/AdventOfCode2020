@@ -1,7 +1,9 @@
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.*;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.regex.MatchResult;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -12,6 +14,7 @@ public class day07 {
 
     private record BagRule(String bagType, List<String> canBePutIn) {}
 
+    // Why doesn't this work??????
     public static void main(String[] args) {
         DATA.lines().forEach(insertBagRule);
 

@@ -2,10 +2,23 @@ import java.util.ArrayList;
 import java.util.function.Predicate;
 
 public class day03 {
+
     private static String DATA;
     private static final int ROW_LENGTH = 31;
 
+    // Producing wrong outputs, gotta look at this later
     public static void main(String[] args) {
+        part1();
+        part2();
+    }
+
+    private static void part1() {
+        var result1 = findTreeNumToBottom(3, 1);
+
+        System.out.println(result1);
+    }
+
+    private static void part2() {
         var result1 = findTreeNumToBottom(1, 1);
         var result2 = findTreeNumToBottom(3, 1);
         var result3 = findTreeNumToBottom(5, 1);
